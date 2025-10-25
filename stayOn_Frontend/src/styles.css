@@ -1,0 +1,35 @@
+:root {
+    --orange: #f3a32f;
+    --light-blue: #194866;
+    --dark-blue: #253046;
+    --blue: #007bff;
+    --text-dark: #2c3e50;
+    --text-light: #7a8c9e;
+    --white: #ffffff;
+    --light-gray: #f5f7fa;
+    --gray-border: #e1e5eb;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html,
+body {
+    background-color: #e5e5e5;
+    height: 100%;
+    margin: 0;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-content {
+    flex: 1;
+}

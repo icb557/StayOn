@@ -1,0 +1,87 @@
+.contact-page {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: url('https://wortev.com/wp-content/uploads/2024/05/Soporte-tecnico-para-empresas.webp') no-repeat center center/cover; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+  
+  .contact-container {
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .image-section {
+    flex: 1 1 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .image-section img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .content-form-section {
+    flex: 1 1 60%;
+    padding: 30px;
+  }
+  
+  .about-us, .support-form {
+    margin-bottom: 30px;
+  }
+  
+  .support-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .support-form input,
+  .support-form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .support-form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #163a57;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .support-form button[type="button"] {
+    background-color: #6c757d;
+  }
+  
+  .support-form button:hover {
+    opacity: 0.9;
+  }
+  

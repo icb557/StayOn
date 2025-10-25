@@ -1,0 +1,29 @@
+<div class="contact-page">
+    <div class="overlay"></div>
+    <div class="contact-container">
+      <div class="image-section">
+        <img src="https://www.shutterstock.com/image-photo/vertical-side-view-beautiful-blond-600nw-2261833293.jpg" alt="Support Image" />
+      </div>
+  
+      <div class="content-form-section">
+        <div class="about-us">
+          <h2>Sobre Nosotros</h2>
+          <p>
+            <!-- Aquí puedes escribir tu información -->
+            Somos una plataforma dedicada a conectar estudiantes y promover el aprendizaje colaborativo...
+          </p>
+        </div>
+  
+        <div class="support-form">
+          <h2>Soporte</h2>
+          <form (submit)="sendEmail($event)">
+            <input type="text" name="name" placeholder="Nombre" required />
+            <input type="email" name="email" placeholder="Correo" required />
+            <input type="text" name="title" placeholder="Asunto" required />
+            <textarea name="message" placeholder="Mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

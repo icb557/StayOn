@@ -1,0 +1,28 @@
+<div class="container mt-4">
+    <h2 class="meetings-title">Todas las reuniones</h2>
+    <div class="meeting-search-bar">
+        <input type="text" class="form-control" placeholder="Buscar por título, descripción o URL..."
+            [formControl]="searchControl" name="search" />
+        <span class="search-icon">🔍</span>
+    </div>
+    <div class="cards-container">
+        @for (meeting of filtered; track meeting.id) {
+        <div class="meeting-card">
+            <h4>{{ meeting.title }}</h4>
+            <p><strong>Descripción:</strong> {{ meeting.description }}</p>
+            <p>
+                <strong>URL:</strong>
+                <a [href]="meeting.url" target="_blank">Enlace</a>
+            </p>
+            <p>
+                <strong>Fecha de reunión:</strong>
+                {{ meeting.fechaReunion | date: 'short' }}
+            </p>
+            <p>
+                <strong>Creador:</strong>
+                {{ meeting.User?.firstName + ' ' + meeting.User?.lastName || meeting.userId }}
+            </p>
+        </div>
+        }
+    </div>
+</div>

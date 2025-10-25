@@ -1,0 +1,78 @@
+@startuml Diagrama de Clases - StayOn
+skinparam classAttributeIconSize 0
+
+class Persona {
+  - correo: String
+  - nombre: String
+  - segundoNombre: String
+  - primerApellido: String
+  - segundoApellido: String
+  - carrera: String
+  - rol: String
+  - edad: Integer
+  --
+  +registrarse()
+  +iniciarSesion()
+  +editarPerfil()
+}
+
+class Credencial {
+  - correo: String
+  - contraseña: String
+  --
+  +validarAcceso()
+}
+
+class Publicacion {
+  - id: Integer
+  - mensaje: String
+  - link: String
+  --
+  +crearPublicacion()
+  +editarPublicacion()
+}
+
+class Comentario {
+  - idPublicacion: Integer
+  - mensaje: String
+  --
+  +comentar()
+}
+
+class Reunion {
+  - id: Integer
+  - descripcion: String
+  - link: String
+  - fecha: DateTime
+  --
+  +crearReunion()
+  +editarReunion()
+}
+
+class Tema {
+  - id: Integer
+  - nombre: String
+  --
+  +crearTema()
+}
+
+class Seguidor {
+  - idSeguidor: String
+  - idSeguido: String
+  --
+  +seguirUsuario()
+  +dejarDeSeguir()
+}
+
+' Relaciones
+Persona "1" -- "1" Credencial : tiene
+Persona "1" -- "0..*" Publicacion : crea
+Persona "1" -- "0..*" Reunion : organiza
+Persona "1" -- "0..*" Comentario : escribe
+Persona "1" -- "0..*" Seguidor : sigue
+Persona "1" -- "0..*" Seguidor : es seguido por
+
+Publicacion "1" -- "0..*" Comentario : recibe
+Publicacion "1" -- "1" Tema : pertenece a
+
+@enduml

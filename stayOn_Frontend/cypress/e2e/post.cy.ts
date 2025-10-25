@@ -1,0 +1,25 @@
+describe('post', () => {
+  it('should create post', () => {
+    cy.visit('http://localhost:4200/login')
+    cy.get('input[name="email"]').type('isac_cortes82212@elpoli.edu.co')
+    cy.get('input[name="password"]').type('P@ssw0rd')
+    cy.get('button[type="submit"]').click()
+    cy.location('pathname').should('eq', '/')
+    cy.get('textarea[name="message"]').type('This is a test post')
+    cy.get('select[name="topicId"]').select('1')
+    cy.get('input[type="file"]').attachFile('Arquitectura-todo-list.png');
+    cy.wait(1000)
+    cy.get('button[type="submit"]').contains('Publicar').click()
+    cy.get('h2').contains('Post Published').should('exist')
+  })
+  it('should not create a post with empy message', () => {
+    cy.visit('http://localhost:4200/login')
+    cy.get('input[name="email"]').type('isac_cortes82212@elpoli.edu.co')
+    cy.get('input[name="password"]').type('P@ssw0rd')
+    cy.get('button[type="submit"]').click()
+    cy.location('pathname').should('eq', '/')
+    cy.get('select[name="topicId"]').select('1')
+    cy.get('button[type="submit"]').contains('Publicar').click()
+    cy.get('h2').contains('Invalid Form').should('exist')
+  })
+})

@@ -1,0 +1,62 @@
+<main>
+  <nav class="navbar">
+    <!-- Logo Section -->
+    <a href="#" class="logo">
+      <img src="StayOnLogo.png" alt="Logo" />
+    </a>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a
+        routerLink="/"
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="bx bxs-home"></i>
+        <span>Inicio</span>
+      </a>
+      <a
+        routerLink="/preferences/{{ userId }}"
+        class="nav-item"
+        routerLinkActive="active"
+        (click)="goToPreferences()"
+      >
+        <i class="bx bx-list-check"></i>
+        <span>Preferencias</span>
+      </a>
+      <a routerLink="/meeting" class="nav-item" routerLinkActive="active">
+        <i class="bx bx-plus-circle"></i>
+        <span>Crear Reunion</span>
+      </a>
+      <a routerLink="/meetings" class="nav-item" routerLinkActive="active">
+        <i class="bx bx-group"></i>
+        <span>Reuniones</span>
+      </a>
+      <a
+        routerLink="/about-support"
+        class="nav-item"
+        routerLinkActive="active"
+        (click)="goToAboutSupport()"
+      >
+        <i class="bx bxs-contact"></i>
+        <span>Sobre Nosotros</span>
+      </a>
+    </div>
+
+    <!-- Right Section: Search, User Icon, Name, and Logout -->
+    <div class="nav-right">
+      <a
+        id="user-icon"
+        aria-label="User account"
+        routerLink="/profile/{{ userId }}"
+        class="nav-item"
+        routerLinkActive="active"
+      >
+        <i class="bx bxs-user-circle"></i>
+      </a>
+      <p id="userName">{{ userName }}</p>
+      <button class="logout-button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </nav>
+</main>

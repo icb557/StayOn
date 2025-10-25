@@ -1,0 +1,62 @@
+@startuml Diagrama de Casos de Uso - StayOn
+
+left to right direction
+
+actor Estudiante
+actor Monitor
+
+rectangle "Sistema StayOn" {
+
+  ' Grupo de funciones comunes
+  package "Funciones Comunes" {
+    usecase "Iniciar sesión" as UC1
+    usecase "Registrarse" as UC2
+    usecase "Editar información del perfil" as UC3
+    usecase "Comentar publicaciones" as UC4
+    usecase "Dar feedback" as UC5
+  }
+
+  ' Funciones específicas del Monitor
+  package "Funciones Monitor" {
+    usecase "Publicar material de estudio" as UC6
+    usecase "Organizar reuniones" as UC7
+  }
+
+  ' Funciones específicas del Estudiante
+  package "Funciones Estudiante" {
+    usecase "Seguir" as UC8
+    usecase "Calificar monitores" as UC9
+    usecase "Ver material de estudio" as UC10
+  }
+}
+
+' Relación Estudiante
+together {
+    Estudiante -[#green]-> UC1
+    Estudiante -[#green]-> UC2
+    Estudiante -[#green]-> UC3
+    Estudiante -[#green]-> UC4
+    Estudiante -[#green]-> UC5
+    Estudiante -[#green]-> UC8
+    Estudiante -[#green]-> UC9
+    Estudiante -[#green]-> UC10
+}
+
+
+' Relación Monitor
+together {
+    Monitor -[#blue]-> UC1
+    Monitor -[#blue]-> UC2
+    Monitor -[#blue]-> UC3
+    Monitor -[#blue]-> UC4
+    Monitor -[#blue]-> UC5
+    Monitor -[#blue]-> UC6
+    Monitor -[#blue]-> UC7
+}
+
+
+' Relaciones includes y extends
+UC9 <. UC5 : <<extend>>
+UC10 .> UC6 : <<include>>
+
+@enduml

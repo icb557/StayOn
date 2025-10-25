@@ -1,0 +1,57 @@
+<div class="preferences-container">
+  <div class="preferences-header">
+    <h1>Mis Preferencias</h1>
+    <p>
+      Selecciona los temas que te interesan para personalizar tu experiencia
+    </p>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando temas...</p>
+  </div>
+
+  <div class="topics-section" *ngIf="!loading">
+    <div class="section-title">
+      <h2>Mis Temas Favoritos</h2>
+      <p>Temas que has seleccionado como preferidos</p>
+    </div>
+
+    <div class="topics-grid">
+      @for (topic of topics; track topic.id) { @if
+      (selectedTopicIds.has(topic.id)) {
+      <div class="topic-card selected" (click)="togglePreference(topic)">
+        <div class="topic-name">{{ topic.name }}</div>
+        <div class="topic-status">
+          <span class="status-icon">✓</span>
+        </div>
+      </div>
+      } } @if (selectedTopicIds.size === 0) {
+      <div class="no-topics">
+        <p>No has seleccionado ningún tema como favorito.</p>
+      </div>
+      }
+    </div>
+
+    <div class="section-title">
+      <h2>Todos los Temas</h2>
+      <p>Explora y selecciona los temas que te interesan</p>
+    </div>
+
+    <div class="topics-grid">
+      @for (topic of topics; track topic.id) { @if
+      (!selectedTopicIds.has(topic.id)) {
+      <div class="topic-card" (click)="togglePreference(topic)">
+        <div class="topic-name">{{ topic.name }}</div>
+        <div class="topic-status"></div>
+      </div>
+      } }
+    </div>
+  </div>
+
+  @if (topics.length === 0 && !loading) {
+  <div class="no-topics">
+    <p>No hay temas disponibles en este momento.</p>
+  </div>
+  }
+</div>

@@ -1,0 +1,156 @@
+{
+    "info": {
+        "_postman_id": "5ca92e5a-15af-4aec-b166-30cd7b9453ee",
+        "name": "StayOn",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "Posts",
+            "item": [
+                {
+                    "name": "GetPosts",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/post",
+                            "path": [
+                                "api",
+                                "post"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                },
+                {
+                    "name": "GetPostById",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/post/4",
+                            "path": [
+                                "api",
+                                "post",
+                                "4"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                },
+                {
+                    "name": "GetPostByUser",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/post/user/juan_adams82212@elpoli.edu.co",
+                            "path": [
+                                "api",
+                                "post",
+                                "user",
+                                "juan_adams82212@elpoli.edu.co"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                },
+                {
+                    "name": "UpdatePost",
+                    "request": {
+                        "method": "PATCH",
+                        "url": {
+                            "raw": "http://localhost:3000/api/post/2",
+                            "path": [
+                                "api",
+                                "post",
+                                "2"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n\t\"message\": \"Test2 wwwww\",\n\t\"date\": \"2025-05-03T11:00:00Z\",\n\t\"topicId\": 2\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "DeletePost",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:3000/api/post/2",
+                            "path": [
+                                "api",
+                                "post",
+                                "2"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "item": []
+        },
+        {
+            "name": "Profile",
+            "item": [
+                {
+                    "name": "GetProfile",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/profile/juan_adams82212@elpoli.edu.co",
+                            "path": [
+                                "api",
+                                "profile",
+                                "juan_adams82212@elpoli.edu.co"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n\t\"message\": \"Test123\",\n\t\"date\": \"2025-05-03T10:00:00Z\",\n\t\"topicId\": 1,\n\t\"userId\": \"isac_cortes82212@elpoli.edu.co\",\n\t\"materials\": [\n    {\n      \"name\": \"doc12\",\n      \"uri\": \"https://example.com/material1.pdf\",\n      \"type\": \"document\"\n    },\n    {\n      \"name\": \"doc123\",\n      \"uri\": \"https://example.com/material2.pdf\",\n      \"type\": \"document\"\n    }\n  ]\n}"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

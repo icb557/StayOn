@@ -1,0 +1,51 @@
+<div class="container mt-4">
+    <h2>Crear nueva reunión</h2>
+    <form class="mb-4" [formGroup]="meetingForm" (ngSubmit)="createMeeting()">
+        <div class="form-group">
+            <input type="text" class="form-control mb-2" placeholder="Título" formControlName="title" required />
+        </div>
+        <div class="form-group">
+            <textarea class="form-control mb-2" placeholder="Descripción" formControlName="description"
+                required></textarea>
+        </div>
+        <div class="form-group">
+            <input type="url" class="form-control mb-2" placeholder="URL de reunión" formControlName="url" required />
+        </div>
+        <div class="form-group">
+            <input type="datetime-local" class="form-control mb-2" placeholder="Fecha y hora de la reunión"
+                formControlName="fechaReunion" required />
+        </div>
+        <button class="btn btn-primary" [disabled]="meetingForm.invalid">
+            Crear reunión
+        </button>
+    </form>
+
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Buscar por título..." [(ngModel)]="searchTerm"
+            name="search" />
+    </div>
+
+    <h3>Mis reuniones</h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>URL</th>
+                <th>Fecha de reunión</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (meeting of filteredMeetings(); track meeting.id) {
+            <tr>
+                <td>{{ meeting.title }}</td>
+                <td>{{ meeting.description }}</td>
+                <td>
+                    <a [href]="meeting.url" target="_blank">Enlace</a>
+                </td>
+                <td>{{ meeting.fechaReunion | date: 'short' }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

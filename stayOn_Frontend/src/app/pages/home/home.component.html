@@ -1,0 +1,291 @@
+<div class="home-container">
+  <div class="carousel-wrapper">
+    <img
+      src="https://estudios.unad.edu.co/images/2024/SUA.jpg"
+      class="carousel-slide active"
+      alt="Slide 1"
+    />
+    <img
+      src="https://estudios.unad.edu.co/images/2025/estrategias-digitales-de-comunicacion.jpg"
+      class="carousel-slide"
+      alt="Slide 2"
+    />
+    <img
+      src="https://estudios.unad.edu.co/images/2024/Espanol-como-Segunda-Lengua.jpg"
+      class="carousel-slide"
+      alt="Slide 3"
+    />
+  </div>
+  <!-- Panel para crear publicación -->
+  <div class="post-creator-wrapper">
+    <div class="post-creator">
+      <div class="post-header">Crear publicación</div>
+      <form
+        [formGroup]="publishForm"
+        (ngSubmit)="onSubmit()"
+        enctype="multipart/form-data"
+        class="publish-form"
+      >
+        <div class="post-body">
+          <textarea
+            formControlName="message"
+            class="post-message"
+            placeholder="¿Qué estás pensando {{ userName ? userName : '' }}?"
+            name="message"
+          ></textarea>
+
+          <select formControlName="topicId" class="post-topic" name="topicId">
+            <option value="" disabled selected>Selecciona un tema</option>
+            @for (topic of topics; track topic.id) {
+            <option value="{{ topic.id }}">{{ topic.name }}</option>
+            }
+          </select>
+
+          <div class="attachment-area">
+            <label for="file-upload" class="attachment-label"
+              >📎 Adjuntar archivo</label
+            >
+            <input
+              type="file"
+              id="file-upload"
+              class="file-input"
+              (change)="onFileChange($event)"
+              multiple
+              accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+            />
+          </div>
+
+          @if (selectedFiles.length > 0) {
+          <div class="file-preview">
+            @for (file of selectedFiles; track $index; let i = $index) {
+            <div class="file-item">
+              <span>{{ file.name }}</span>
+              <button type="button" (click)="removeFile(i)">❌</button>
+            </div>
+            }
+          </div>
+          }
+
+          <button class="comment-btn publish-btn" type="submit">
+            Publicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-content">
+      <!-- Posts del usuario -->
+      <div class="posts-container">
+        <div class="post-card">
+          <h2 class="section-title">Contenido que te interesa</h2>
+        </div>
+        @for (item of postsByUserPreferences; track item.id; let i=$index) {
+        <div class="post-card">
+          <div class="post-author">
+            <div class="post-avatar" (click)="showProfile(item.userId)">
+              {{ item.User.firstName!.charAt(0).toUpperCase() || ""
+              }}{{ item.User.lastName!.charAt(0).toUpperCase() || "" }}
+            </div>
+            <div class="post-author-info">
+              <div class="post-author-name" (click)="showProfile(item.userId)">
+                {{
+                  item.User.firstName +
+                    " " +
+                    (item.User.middleName ? item.User.middleName : "") +
+                    " " +
+                    item.User.lastName +
+                    " " +
+                    (item.User.secondLastName ? item.User.secondLastName : "")
+                }}
+              </div>
+              <div class="post-date">{{ formatDate(item.date) }}</div>
+              <div class="post-tag">{{ item.Topic.name }}</div>
+            </div>
+          </div>
+          <div class="post-content">
+            {{ item.message }}
+          </div>
+
+          @if(item.Materials && item.Materials.length > 0) {
+          <div class="post-attachments">
+            <div class="attachment-preview-images">
+              @for (item of filterImages(item.Materials); track $index) {
+              <img
+                [src]="'http://localhost:3000/uploads/' + item.uri"
+                alt="{{ item.name }}"
+                class="attachment-preview-image"
+              />
+              } @for (item of filterVideos(item.Materials); track $index) {
+              <video controls class="attachment-preview-image">
+                <source
+                  [src]="'http://localhost:3000/uploads/' + item.uri"
+                  type="video/mp4"
+                />
+                Tu navegador no soporta el video.
+              </video>
+              }
+            </div>
+
+            <div class="attachment-preview-document">
+              @for (item of filterDocuments(item.Materials); track $index) {
+              <a
+                [href]="'http://localhost:3000/uploads/' + item.uri"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="attachment-download-link"
+              >
+                <img src="file-logo.png" alt="Word" class="file-icon" />
+                <span class="file-name">{{ item.name }}</span>
+              </a>
+              }
+            </div>
+          </div>
+          }
+          <div class="post-footer">
+            <hr class="post-separator" />
+            <button class="comment-btn" (click)="showPost(item.id)">
+              Ver publicación
+            </button>
+          </div>
+        </div>
+        }
+        <div class="post-card">
+          <h2 class="section-title">Contenido por descubrir</h2>
+        </div>
+        @for (item of posts; track item.id; let i=$index) {
+        <div class="post-card">
+          <div class="post-author">
+            <div class="post-avatar" (click)="showProfile(item.userId)">
+              {{ item.User.firstName!.charAt(0).toUpperCase() || ""
+              }}{{ item.User.lastName!.charAt(0).toUpperCase() || "" }}
+            </div>
+            <div class="post-author-info">
+              <div class="post-author-name" (click)="showProfile(item.userId)">
+                {{
+                  item.User.firstName +
+                    " " +
+                    (item.User.middleName ? item.User.middleName : "") +
+                    " " +
+                    item.User.lastName +
+                    " " +
+                    (item.User.secondLastName ? item.User.secondLastName : "")
+                }}
+              </div>
+              <div class="post-date">{{ formatDate(item.date) }}</div>
+              <div class="post-tag">{{ item.Topic.name }}</div>
+            </div>
+          </div>
+          <div class="post-content">
+            {{ item.message }}
+          </div>
+
+          @if(item.Materials && item.Materials.length > 0) {
+          <div class="post-attachments">
+            <div class="attachment-preview-images">
+              @for (item of filterImages(item.Materials); track $index) {
+              <img
+                [src]="'http://localhost:3000/uploads/' + item.uri"
+                alt="{{ item.name }}"
+                class="attachment-preview-image"
+              />
+              } @for (item of filterVideos(item.Materials); track $index) {
+              <video controls class="attachment-preview-image">
+                <source
+                  [src]="'http://localhost:3000/uploads/' + item.uri"
+                  type="video/mp4"
+                />
+                Tu navegador no soporta el video.
+              </video>
+              }
+            </div>
+
+            <div class="attachment-preview-document">
+              @for (item of filterDocuments(item.Materials); track $index) {
+              <a
+                [href]="'http://localhost:3000/uploads/' + item.uri"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="attachment-download-link"
+              >
+                <img src="file-logo.png" alt="Word" class="file-icon" />
+                <span class="file-name">{{ item.name }}</span>
+              </a>
+              }
+            </div>
+          </div>
+          }
+          <div class="post-footer">
+            <hr class="post-separator" />
+            <button class="comment-btn" (click)="showPost(item.id)">
+              Ver publicación
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Panel lateral derecho completo -->
+    <div class="following-container">
+      <!-- Barra de búsqueda -->
+      <form>
+        <div class="search-bar">
+          <input
+            type="text"
+            [(ngModel)]="user"
+            name="user"
+            placeholder="Buscar personas o temas..."
+          />
+          <button class="search-btn" (click)="searchUser()">Buscar</button>
+        </div>
+      </form>
+
+      <!-- Temas sugeridos -->
+      <div class="suggested-topics">
+        <div class="topics-header">Temas sugeridos</div>
+        <div class="topics-list">
+          <span class="topic-tag">Matemáticas</span>
+          <span class="topic-tag">Literatura</span>
+          <span class="topic-tag">Física</span>
+          <span class="topic-tag">Desarrollo Web</span>
+          <span class="topic-tag">Inteligencia Artificial</span>
+          <span class="topic-tag">Estadistica</span>
+          <span class="topic-tag">Redes</span>
+        </div>
+      </div>
+
+      <!-- Siguiendo -->
+      <div class="following-header">Siguiendo</div>
+      <div class="following-list">
+        <div class="following-item">
+          <div class="following-avatar">LC</div>
+          <div class="following-info">
+            <div class="following-name">Laura Castillo</div>
+            <div class="following-program">Ing. Industrial</div>
+          </div>
+          <button class="btn-follow btn-following">Siguiendo</button>
+        </div>
+
+        <div class="following-item">
+          <div class="following-avatar">MV</div>
+          <div class="following-info">
+            <div class="following-name">Miguel Vargas</div>
+            <div class="following-program">Ing. Sistemas</div>
+          </div>
+          <button class="btn-follow btn-following">Siguiendo</button>
+        </div>
+
+        <div class="following-item">
+          <div class="following-avatar">AP</div>
+          <div class="following-info">
+            <div class="following-name">Ana Patricia Soto</div>
+            <div class="following-program">Medicina</div>
+          </div>
+          <button class="btn-follow btn-following">Siguiendo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
