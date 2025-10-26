@@ -1,0 +1,75 @@
+services:
+  # PostgreSQL Database Service
+  database:
+    image: postgres:17.6-alpine3.22
+    container_name: stayon-database
+    environment:
+      POSTGRES_DB: stayonDB
+      POSTGRES_USER: stayon
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - stayon:/var/lib/postgresql/data
+    networks:
+      - stayon-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stayon -d stayonDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Service (Express.js)
+  backend:
+    build:
+      context: ./stayOn_Backend
+      dockerfile: Dockerfile
+    container_name: stayon-backend
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: stayonDB
+      DB_USER: stayon
+      DB_PASSWORD: 1234
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./stayOn_Backend:/app
+      - /app/node_modules
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - stayon-network
+    command: sh -c "npm run sync && npm run dev"
+
+  # Frontend Service (Angular)
+  frontend:
+    build:
+      context: ./stayOn_Frontend
+      dockerfile: Dockerfile
+    container_name: stayon-frontend
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./stayOn_Frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - stayon-network
+    command: npm run start -- --host 0.0.0.0 --port 4000
+
+# Named volume for database persistence
+volumes:
+  stayon:
+    name: stayon
+
+# Network for service communication
+networks:
+  stayon-network:
+    driver: bridge
+
