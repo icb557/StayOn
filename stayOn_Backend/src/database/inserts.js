@@ -76,13 +76,10 @@ export async function insertData () {
   const topicsList = await Topic.findAll()
 
   for (const user of usersList) {
-    // Randomly select 1 to 3 topics for each user
+    // Randomly select 1 to 3 topics for each user, ensuring uniqueness
     const numTopics = Math.floor(Math.random() * 3) + 1 // 1 to 3 topics
-    const randomTopics = []
-    for (let i = 0; i < numTopics; i++) {
-      const randomIndex = Math.floor(Math.random() * topicsList.length)
-      randomTopics.push(topicsList[randomIndex])
-    }
+    const shuffledTopics = topicsList.slice().sort(() => 0.5 - Math.random())
+    const randomTopics = shuffledTopics.slice(0, numTopics)
     await user.addTopics(randomTopics) // This creates the Preference entries
   }
 
