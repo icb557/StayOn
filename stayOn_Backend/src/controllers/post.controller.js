@@ -214,7 +214,7 @@ export class PostController {
       const topicIds = user.Topics.map((topic) => topic.id)
 
       if (topicIds.length === 0) {
-        return res.json({ message: 'No preferences found', posts: [] })
+        return res.json([])
       }
 
       const posts = await Post.findAll({

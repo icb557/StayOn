@@ -129,18 +129,15 @@ export class UserController {
         {
           email: user.email,
           role: user.role,
-          id: user.id
+          id: user.id,
+          firstName: user.firstName
         },
         process.env.SECRET_KEY ?? 'LOLOMANSOLO',
-        { expiresIn: '2h' }
+        { expiresIn: '4h' }
       )
 
       res.json({
-        token,
-        role: user.role,
-        email: user.email,
-        id: user.id,
-        firstName: user.firstName
+        token
       })
     } catch (error) {
       res.status(500).json({ message: error.message })

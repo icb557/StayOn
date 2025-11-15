@@ -14,6 +14,7 @@ import { followerRouter } from './routes/follower.routes.js'
 import { commentRouters } from './routes/comment.routes.js'
 import { preferenceRouter } from './routes/preference.routes.js'
 import { meetingRouters } from './routes/meeting.routes.js'
+import { validateToken } from './middleware/validateToken.js'
 
 const app = express()
 
@@ -31,13 +32,13 @@ app.use(cors())
 app.use(express.json())
 
 app.use(userRouters)
-app.use(postRouters)
-app.use(profileRouters)
-app.use(topicRouter)
-app.use(followerRouter)
-app.use(commentRouters)
-app.use(preferenceRouter)
-app.use(meetingRouters)
+app.use(validateToken, postRouters)
+app.use(validateToken, profileRouters)
+app.use(validateToken, topicRouter)
+app.use(validateToken, followerRouter)
+app.use(validateToken, commentRouters)
+app.use(validateToken, preferenceRouter)
+app.use(validateToken, meetingRouters)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 
 export default app

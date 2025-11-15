@@ -5,7 +5,7 @@ export const validateToken = (req, res, next) => {
   if (headerToken !== undefined && headerToken.startsWith('Bearer ')) {
     try {
       const token = headerToken.slice(7)
-      jwt.verify(token, process.env.SECRET_KEY)
+      jwt.verify(token, process.env.SECRET_KEY ?? 'LOLOMANSOLO')
       next()
     } catch (error) {
       res.status(401).json({
@@ -24,7 +24,7 @@ export const validateRolToken =
     (req, res, next) => {
       const headerToken = req.get('authorization')
       const token = headerToken.slice(7)
-      const payLoad = jwt.verify(token, process.env.SECRET_KEY)
+      const payLoad = jwt.verify(token, process.env.SECRET_KEY ?? 'LOLOMANSOLO')
 
       if (rol.includes(payLoad.rol)) {
         next()

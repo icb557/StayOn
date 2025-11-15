@@ -18,9 +18,15 @@ import Swal from 'sweetalert2';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  validPassword =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   userForm = new FormGroup({
     email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.pattern(this.validPassword),
+    ]),
     firstName: new FormControl('', Validators.required),
     middleName: new FormControl(''),
     lastName1: new FormControl('', Validators.required),
@@ -44,7 +50,7 @@ export class RegisterComponent {
       };
       this._userserService.createUser(user as User).subscribe((data) => {
         Swal.fire({
-          title: 'User Created Successfully',
+          title: 'Usuario Creado!',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500,
