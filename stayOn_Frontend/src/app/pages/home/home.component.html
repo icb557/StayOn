@@ -253,45 +253,57 @@
       <div class="suggested-topics">
         <div class="topics-header">Temas sugeridos</div>
         <div class="topics-list">
-          <span class="topic-tag">Matemáticas</span>
-          <span class="topic-tag">Literatura</span>
-          <span class="topic-tag">Física</span>
-          <span class="topic-tag">Desarrollo Web</span>
-          <span class="topic-tag">Inteligencia Artificial</span>
-          <span class="topic-tag">Estadistica</span>
-          <span class="topic-tag">Redes</span>
+          @for (topic of topics; track topic.id) {
+          <span class="topic-tag" (click)="showTopic(topic.id)">{{ topic.name }}</span>
+          }
         </div>
       </div>
 
       <!-- Siguiendo -->
       <div class="following-header">Siguiendo</div>
       <div class="following-list">
-        <div class="following-item">
-          <div class="following-avatar">LC</div>
-          <div class="following-info">
-            <div class="following-name">Laura Castillo</div>
-            <div class="following-program">Ing. Industrial</div>
+        @for (item of following; track $index;let i=$index) {
+          <div class="following-item">
+            <div class="following-avatar">
+              {{
+                (item.firstName ? item.firstName.substring(0, 1) : "") +
+                  (item.lastName ? item.lastName.substring(0, 1).toUpperCase() : "")
+              }}
+            </div>
+            <div class="following-info">
+              <div class="following-name" (click)="showProfile(item.id)">
+                {{
+                  item.firstName +
+                    " " +
+                    (item.middleName ? item.middleName : "") +
+                    " " +
+                    item.lastName +
+                    " " +
+                    (item.secondLastName ? item.secondLastName : "")
+                }}
+              </div>
+              <div class="following-program">{{ item.major }}</div>
+            </div>
+            @if (userIsFollowing(item.id) && !isMyProfile(item.id)) {
+            <button
+              class="btn-follow btn-following"
+              (mouseenter)="hoveredIndex = i"
+              (mouseleave)="hoveredIndex = null"
+              [ngClass]="{
+                following: true,
+                unfollow: hoveredIndex === i
+              }"
+              (click)="unFollow(item.id)"
+            >
+              {{ hoveredIndex === i ? "Dejar de seguir" : "Siguiendo" }}
+            </button>
+            }@else if (!userIsFollowing(item.id) && !isMyProfile(item.id)){
+            <button class="btn-follow btn-following" (click)="followUser(item.id)">
+              Seguir
+            </button>
+            }
           </div>
-          <button class="btn-follow btn-following">Siguiendo</button>
-        </div>
-
-        <div class="following-item">
-          <div class="following-avatar">MV</div>
-          <div class="following-info">
-            <div class="following-name">Miguel Vargas</div>
-            <div class="following-program">Ing. Sistemas</div>
-          </div>
-          <button class="btn-follow btn-following">Siguiendo</button>
-        </div>
-
-        <div class="following-item">
-          <div class="following-avatar">AP</div>
-          <div class="following-info">
-            <div class="following-name">Ana Patricia Soto</div>
-            <div class="following-program">Medicina</div>
-          </div>
-          <button class="btn-follow btn-following">Siguiendo</button>
-        </div>
+          }
       </div>
     </div>
   </div>

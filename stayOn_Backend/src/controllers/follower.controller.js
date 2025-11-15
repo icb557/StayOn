@@ -69,7 +69,7 @@ export class FollowerController {
       if (following) {
         res.json(following.Following)
       } else {
-        res.status(404).json({ error: 'User not found' })
+        res.status.json([])
       }
     } catch (error) {
       res.status(500).json({ error: 'Failed to retrieve following' })

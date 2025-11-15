@@ -1,49 +1,49 @@
-@startuml Diagrama de Casos de Uso - StayOn
+@startuml StayOn_Use_Case_Diagram
 
 left to right direction
 
-actor Estudiante
+actor Student
 actor Monitor
 
-rectangle "Sistema StayOn" {
+rectangle "StayOn System" {
 
-  ' Grupo de funciones comunes
-  package "Funciones Comunes" {
-    usecase "Iniciar sesión" as UC1
-    usecase "Registrarse" as UC2
-    usecase "Editar información del perfil" as UC3
-    usecase "Comentar publicaciones" as UC4
-    usecase "Dar feedback" as UC5
+  ' Common Function Group
+  package "Common Functions" {
+    usecase "Login" as UC1
+    usecase "Register" as UC2
+    usecase "Edit profile information" as UC3
+    usecase "Comment on posts" as UC4
+    usecase "Give feedback" as UC5
   }
 
-  ' Funciones específicas del Monitor
-  package "Funciones Monitor" {
-    usecase "Publicar material de estudio" as UC6
-    usecase "Organizar reuniones" as UC7
+  ' Monitor-Specific Functions
+  package "Monitor Functions" {
+    usecase "Publish study material" as UC6
+    usecase "Organize meetings" as UC7
   }
 
-  ' Funciones específicas del Estudiante
-  package "Funciones Estudiante" {
-    usecase "Seguir" as UC8
-    usecase "Calificar monitores" as UC9
-    usecase "Ver material de estudio" as UC10
+  ' Student-Specific Functions
+  package "Student Functions" {
+    usecase "Follow" as UC8
+    usecase "Rate monitors" as UC9
+    usecase "View study material" as UC10
   }
 }
 
-' Relación Estudiante
+' Student Relationships
 together {
-    Estudiante -[#green]-> UC1
-    Estudiante -[#green]-> UC2
-    Estudiante -[#green]-> UC3
-    Estudiante -[#green]-> UC4
-    Estudiante -[#green]-> UC5
-    Estudiante -[#green]-> UC8
-    Estudiante -[#green]-> UC9
-    Estudiante -[#green]-> UC10
+    Student -[#green]-> UC1
+    Student -[#green]-> UC2
+    Student -[#green]-> UC3
+    Student -[#green]-> UC4
+    Student -[#green]-> UC5
+    Student -[#green]-> UC8
+    Student -[#green]-> UC9
+    Student -[#green]-> UC10
 }
 
 
-' Relación Monitor
+' Monitor Relationships
 together {
     Monitor -[#blue]-> UC1
     Monitor -[#blue]-> UC2
@@ -55,7 +55,7 @@ together {
 }
 
 
-' Relaciones includes y extends
+' Includes and Extends relationships
 UC9 <. UC5 : <<extend>>
 UC10 .> UC6 : <<include>>
 

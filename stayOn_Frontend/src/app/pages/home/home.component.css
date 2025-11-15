@@ -414,6 +414,10 @@
     color: var(--light-blue);
 }
 
+.following-name {
+    cursor: pointer;
+}
+
 .following-program {
     font-size: 12px;
     color: var(--text-light);

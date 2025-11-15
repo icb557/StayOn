@@ -14,10 +14,13 @@ import {
 import { Topic } from '../../interfaces/topic';
 import { TopicService } from '../../services/topic.service';
 import { Material } from '../../interfaces/material';
+import { FollowerService } from '../../services/follower.service';
+import { User } from '../../interfaces/user';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -28,17 +31,16 @@ export class HomeComponent {
   slides!: NodeListOf<Element>;
   userName = localStorage.getItem('firstName')!;
   userId = localStorage.getItem('id')!;
-  topics: Topic[] = [];
+  topics: Topic[] = []
+  following: User[] = []
+  isFollowing = true;
+  isHovered = false;
+  hoveredIndex: number | null = null;
 
   publishForm: FormGroup;
   selectedFiles: File[] = [];
 
-  constructor(
-    private _postService: PostService,
-    private _topicService: TopicService,
-    private router: Router,
-    private fb: FormBuilder
-  ) {
+  constructor(private _followerService: FollowerService, private _postService: PostService, private _topicService: TopicService, private router: Router, private fb: FormBuilder) {
     this.publishForm = this.fb.group({
       message: [
         '',
@@ -60,7 +62,8 @@ export class HomeComponent {
     this.slides = document.querySelectorAll('.carousel-slide');
     this.showSlide(this.currentSlideIndex);
     this.startCarousel();
-    this.getTopics();
+    this.getTopics()
+    this.getFollowing()
   }
 
   showProfile(id: number) {
@@ -133,6 +136,48 @@ export class HomeComponent {
     });
   }
 
+  unFollowUser(currentUserId: number, id: number) {
+    this._followerService.unfollowUser(+currentUserId, id).subscribe({
+      next: () => {
+        this.isFollowing = false;
+        this.getFollowingUser();
+        Swal.fire({
+          title: 'Usuario dejado de seguir',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1200,
+        }).then(() => {
+          window.location.reload();
+        });
+      },
+      error: (e: HttpErrorResponse) => {
+        console.error('Error unfollowing user', e);
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se pudo dejar de seguir al usuario',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1200,
+        });
+      }
+    });
+  }
+
+  
+  getFollowingUser() {
+    const currentUserId = localStorage.getItem('id');
+    if (currentUserId) {
+      this._followerService.getFollowing(+currentUserId).subscribe({
+        next: (data) => {
+          this.following = data;
+        },
+        error: (e: HttpErrorResponse) => {
+          console.error('Error fetching following users', e);
+        }
+      });
+    }
+  }
+
   formatDate(isoDate: string): string {
     const date = new Date(isoDate);
 
@@ -156,6 +201,10 @@ export class HomeComponent {
     }
   }
 
+  showTopic(id: number) {
+    this.router.navigate([`/topic/${id}`])
+  }
+
   getTopics() {
     this._topicService.getTopics().subscribe({
       next: (data) => {
@@ -177,6 +226,61 @@ export class HomeComponent {
         }
       },
     });
+  }
+
+  getFollowing() {
+    this._followerService.getFollowing(Number(this.userId)).subscribe({
+      next: (data) => {
+        this.following = data
+      }, error: (e: HttpErrorResponse) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "An error ocurred while retrieving topics",
+          footer: "Please try again later",
+          showConfirmButton: false,
+          timer: 4000
+        });
+      }
+    })
+  }
+
+  followUser(userId: number) {
+    this._followerService.followUser(Number(this.userId), userId).subscribe({
+      next: () => {
+        this.getFollowing()
+      }
+    })
+  }
+
+  userIsFollowing(id: number) {
+    return this.following.some(user => user.id === id);
+  }
+
+  isMyProfile(id: number): boolean {
+    const currentUserId = localStorage.getItem('id');
+    return currentUserId ? id === +currentUserId : false;
+
+  }
+
+  unFollow(id: number) {
+    const currentUserId = localStorage.getItem('id');
+    if (currentUserId) {
+      Swal.fire({
+        title: "Dejar de seguir usuario",
+        text: "Seguro que quieres dejar de seguir a este usuario?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, dejar de seguir",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.unFollowUser(Number(currentUserId), id);
+        }
+      });
+    }
   }
 
   onFileChange(event: any) {

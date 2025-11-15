@@ -1,68 +1,81 @@
-Table Personas {
+Table People {
   id integer [primary key]
-  correo varchar 
-  contraseña varchar
-  nombre varchar
-  segundo_nombre varchar
-  primer_apellido varchar
-  segundo_apellido varchar
-  carrera varchar
-  rol varchar
-  edad integer
-  calificación float
+  email varchar [unique]
+  password varchar
+  firstName varchar
+  middleName varchar
+  lastName varchar
+  secondLastName varchar
+  major varchar
+  role varchar
+  age integer
 }
 
-Table Publicaciones {
+Table Posts {
   id integer [primary key]
-  mensaje text
-  id_persona integer [not null]
-  id_tema integer [not null]
-  fecha datetime
+  message text
+  date datetime
+  userId integer [not null]
+  topicId integer [not null]
 }
 
 Table Material {
   id integer [primary key]
+  name varchar
   uri varchar
-  tipo varchar
-  id_publicacion varchar [not null]
+  type varchar
+  postId integer [not null]
 }
 
-Table Comentarios {
-  id_publicacion integer [not null]
-  mensaje text
-  fecha datetime
-  id_persona integer [not null]
-}
-
-Table Temas {
+Table Comments {
   id integer [primary key]
-  nombre varchar
+  message text
+  date datetime
+  userId integer [not null]
+  postId integer [not null]
 }
 
-Table Seguidores {
-  id_seguidor integer [not null]
-  id_seguido integer [not null]
+Table Topics {
+  id integer [primary key]
+  name varchar
 }
 
-Table Preferencias {
-  id_usuario integer [not null]
-  id_tema varchar [not null]
+Table Followers {
+  followerId integer [not null]
+  followedId integer [not null]
 }
 
-Table Calificaciones {
-  id_calificado integer [not null]
-  id_calificador integer [not null]
+Table Preferences {
+  userId integer [not null]
+  topicId integer [not null]
+}
+
+Table Meetings {
+  id integer [primary key]
+  title varchar
+  description text
+  url varchar
+  date datetime
+  userId integer [not null]
+  createdAt datetime
+  updatedAt datetime
+}
+
+Table Score {
+  id_scored integer [not null]
+  id_scorer integer [not null]
 }
 
 // Definición de relaciones
-Ref: Publicaciones.id_persona > Personas.id
-Ref: Comentarios.id_publicacion > Publicaciones.id
-Ref: Comentarios.id_persona > Personas.id
-Ref: Seguidores.id_seguidor > Personas.id
-Ref: Seguidores.id_seguido > Personas.id
-Ref: Publicaciones.id_tema > Temas.id
-Ref: Material.id_publicacion > Publicaciones.id
-Ref: Preferencias.id_usuario > Personas.id
-Ref: Preferencias.id_tema > Temas.id
-Ref: Calificaciones.id_calificado > Personas.id
-Ref: Calificaciones.id_calificador > Personas.id
+Ref: Posts.userId > People.id
+Ref: Comments.userId > People.id
+Ref: Comments.postId > Posts.id
+Ref: Followers.followerId > People.id
+Ref: Followers.followedId > People.id
+Ref: Posts.topicId > Topics.id
+Ref: Material.postId > Posts.id
+Ref: Preferences.userId > People.id
+Ref: Preferences.topicId > Topics.id
+Ref: Meetings.userId > People.id
+Ref: Score.id_scored > People.id
+Ref: Score.id_scorer > People.id

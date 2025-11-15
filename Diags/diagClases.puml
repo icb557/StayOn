@@ -1,78 +1,149 @@
-@startuml Diagrama de Clases - StayOn
+@startuml StayOn_Class_Diagram
 skinparam classAttributeIconSize 0
 
-class Persona {
-  - correo: String
-  - nombre: String
-  - segundoNombre: String
-  - primerApellido: String
-  - segundoApellido: String
-  - carrera: String
-  - rol: String
-  - edad: Integer
-  --
-  +registrarse()
-  +iniciarSesion()
-  +editarPerfil()
-}
-
-class Credencial {
-  - correo: String
-  - contraseña: String
-  --
-  +validarAcceso()
-}
-
-class Publicacion {
+class User {
   - id: Integer
-  - mensaje: String
-  - link: String
+  - email: String
+  - password: String
+  - firstName: String
+  - middleName: String
+  - lastName: String
+  - secondLastName: String
+  - major: String
+  - role: String
+  - age: Integer
   --
-  +crearPublicacion()
-  +editarPublicacion()
+  +getAllUsers()
+  +getUser()
+  +createUser()
+  +updateUser()
+  +deleteUser()
+  +login()
+  +requestPasswordReset()
+  +changePassword()
 }
 
-class Comentario {
-  - idPublicacion: Integer
-  - mensaje: String
-  --
-  +comentar()
-}
-
-class Reunion {
+class Post {
   - id: Integer
-  - descripcion: String
-  - link: String
-  - fecha: DateTime
+  - message: Text
+  - date: Date
+  - userId: Integer
+  - topicId: Integer
   --
-  +crearReunion()
-  +editarReunion()
+  +getAllPosts()
+  +getPostById()
+  +getPostsByUser()
+  +createPost()
+  +updatePost()
+  +deletePost()
+  +getPostsByUserPreferences()
 }
 
-class Tema {
+class Comment {
   - id: Integer
-  - nombre: String
+  - message: Text
+  - date: Date
+  - userId: Integer
+  - postId: Integer
   --
-  +crearTema()
+  +getAllComments()
+  +createComment()
+  +getCommentById()
+  +getCommentsByPost()
+  +updateComment()
+  +deleteComment()
 }
 
-class Seguidor {
-  - idSeguidor: String
-  - idSeguido: String
-  --
-  +seguirUsuario()
-  +dejarDeSeguir()
+class Material {
+  - id: Integer
+  - name: String
+  - uri: String
+  - type: String
+  - postId: Integer
 }
 
-' Relaciones
-Persona "1" -- "1" Credencial : tiene
-Persona "1" -- "0..*" Publicacion : crea
-Persona "1" -- "0..*" Reunion : organiza
-Persona "1" -- "0..*" Comentario : escribe
-Persona "1" -- "0..*" Seguidor : sigue
-Persona "1" -- "0..*" Seguidor : es seguido por
+class Topic {
+  - id: Integer
+  - name: String
+  --
+  +getAllTopics()
+  +getTopicById()
+  +createTopic()
+  +updateTopic()
+  +deleteTopic()
+  +getPostsByTopic()
+}
 
-Publicacion "1" -- "0..*" Comentario : recibe
-Publicacion "1" -- "1" Tema : pertenece a
+class Follower {
+  - followerId: Integer
+  - followedId: Integer
+  --
+  +followUser()
+  +unfollowUser()
+  +getFollowers()
+  +getFollowing()
+}
 
+class Preference {
+  - userId: Integer
+  - topicId: Integer
+  --
+  +getAllPreferences()
+  +getUserPreferences()
+  +createPreference()
+  +deleteUserPreference()
+}
+
+class Meeting {
+  - id: Integer
+  - title: String
+  - description: Text
+  - url: String
+  - date: Date
+  - userId: Integer
+  - createdAt: Date
+  - updatedAt: Date
+  --
+  +getAllMeetings()
+  +getMeeting()
+  +createMeeting()
+  +updateMeeting()
+  +deleteMeeting()
+  +getMeetingsByUser()
+  +getActiveMeetings()
+  +deactivateMeeting()
+}
+
+class Score {
+  - id_scored: Integer
+  - id_scorer: Integer
+}
+
+class Profile {
+  --
+  +getProfile()
+}
+
+' Relationships
+User "1" -- "*" Post : creates
+User "1" -- "*" Meeting : organizes
+User "1" -- "*" Comment : writes
+User "1" -- "*" Follower : follows >
+User "1" -- "*" Follower : is followed by <
+User "1" -- "*" Preference : has
+
+Post "1" -- "*" Comment : receives
+Post "1" -- "*" Material : contains
+Post "1" -- "1" Topic : belongs to
+Comment "*" -- "1" Post : on
+Comment "*" -- "1" User : by
+Material "*" -- "1" Post : for
+Meeting "*" -- "1" User : organized by
+Preference "*" -- "1" Topic : for
+Preference "*" -- "1" User : by
+Follower "*" -- "1" User : follower
+Follower "*" -- "1" User : followed
+Score "*" -- "1" User : scored
+Score "*" -- "1" User : scorer
+Profile "1" -- "1" User : is
 @enduml
