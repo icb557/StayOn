@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "9236ea7f-459b-409c-a3ad-835c11dad025",
+		"name": "stayon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50148064",
+		"_collection_link": "https://juajsia-2580810.postman.co/workspace/Juan-Jos%C3%A9-Estrada-V%C3%A9lez's-Works~4717a9a8-7792-41e3-8f0b-438f9a70ae7c/collection/50148064-9236ea7f-459b-409c-a3ad-835c11dad025?action=share&source=collection_link&creator=50148064"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"juan_estrada82212@elpoli.edu.co\",\n  \"password\": \"P@ssw0rd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJpYXQiOjE3NDYzMzEwMDMsImV4cCI6MTc0NjMzNDYwM30.gz1Cj_TD0Litz2e92m_xpIXai55Foo5vQwLrI152nf8\",\n  \"newPassword\": \"P@ssw0rd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request-change-password ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"juan_estrada82212@elpoli.edu.co\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/request-password-reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"request-password-reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getall",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/profile/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "topic",
+			"item": [
+				{
+					"name": "getall",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/topic/2/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"topic",
+								"2",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "follower",
+			"item": [
+				{
+					"name": "follow",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"followerId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/follower/1/follow",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"follower",
+								"1",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unfollow",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"followerId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/follower/1/unfollow",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"follower",
+								"1",
+								"unfollow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getfollowes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5fZXN0cmFkYTgyMjEyQGVscG9saS5lZHUuY28iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlkIjozLCJmaXJzdE5hbWUiOiJKdWFuIiwiaWF0IjoxNzYzNDM0NjA1LCJleHAiOjE3NjM0NDkwMDV9.VGDOUEwmTH3ztWYigz7oJYTv8YzkMy1HVRSikt6gioo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/follower/1/following",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"follower",
+								"1",
+								"following"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
