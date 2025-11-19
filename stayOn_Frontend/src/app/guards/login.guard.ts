@@ -4,21 +4,33 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 export const loginGuard = (): boolean => {
   const router = inject(Router);
-  const token = String(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
 
-  if (token && !tokenIsExpired(token)) {
-    return true;
-  } else {
+  if (!token) {
     localStorage.clear();
     router.navigate(['login']);
     return false;
   }
+
+  if (tokenIsExpired(token)) {
+    localStorage.clear();
+    router.navigate(['login']);
+    return false;
+  }
+  return true;
 };
 
 const tokenIsExpired = (token: string): boolean => {
-  const decoded: JwtPayload = jwtDecode(token);
-  const isExpired = decoded.exp! * 1000 < Date.now();
-  return isExpired;
+  try {
+    const decoded: JwtPayload = jwtDecode(token);
+
+    if (!decoded.exp) return true;
+
+    const isExpired = decoded.exp * 1000 < Date.now();
+    return isExpired;
+  } catch (error) {
+    return true;
+  }
 };
 
 export const loginStatus = (): boolean => {
