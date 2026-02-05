@@ -3,10 +3,12 @@ services:
   database:
     image: postgres:17.6-alpine3.22
     container_name: stayon-database
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: stayonDB
-      POSTGRES_USER: stayon
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -14,7 +16,7 @@ services:
     networks:
       - stayon-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U stayon -d stayonDB"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,13 +27,15 @@ services:
       context: ./stayOn_Backend
       dockerfile: Dockerfile
     container_name: stayon-backend
+    env_file:
+      - .env
     environment:
-      DB_HOST: database
-      DB_PORT: 5432
-      DB_NAME: stayonDB
-      DB_USER: stayon
-      DB_PASSWORD: 1234
-      NODE_ENV: development
+      DB_HOST: ${DB_HOST:-database}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      NODE_ENV: ${NODE_ENV:-development}
     ports:
       - "3000:3000"
     volumes:

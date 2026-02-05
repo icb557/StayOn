@@ -63,15 +63,108 @@ StayOn/
 
 ## 🔧 Configuration
 
+### Secret Management
+
+StayOn uses environment variables for secure credential management. All sensitive data is stored in `.env` files that are excluded from version control.
+
+#### Initial Setup
+
+1. **Copy the environment template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` with your actual credentials:**
+   ```bash
+   # Use your preferred editor
+   nano .env
+   # or
+   vim .env
+   ```
+
+3. **Verify `.env` is gitignored:**
+   The `.env` file should never be committed to version control. It's automatically excluded via `.gitignore`.
+
+#### Environment Variables
+
+The following variables are required in your `.env` file:
+
+**Database Configuration:**
+- `POSTGRES_DB`: PostgreSQL database name
+- `POSTGRES_USER`: PostgreSQL database user
+- `POSTGRES_PASSWORD`: PostgreSQL database password
+
+**Backend Database Connection:**
+- `DB_HOST`: Database host (use `database` for Docker Compose service name)
+- `DB_PORT`: Database port (default: 5432)
+- `DB_NAME`: Database name (should match `POSTGRES_DB`)
+- `DB_USER`: Database user (should match `POSTGRES_USER`)
+- `DB_PASSWORD`: Database password (should match `POSTGRES_PASSWORD`)
+
+**Application Configuration:**
+- `NODE_ENV`: Node environment (`development`, `production`, `test`)
+- `PORT`: Backend server port (optional, defaults to 3000)
+
+#### Security Best Practices
+
+- ✅ **Never commit `.env` files** to version control
+- ✅ **Use strong passwords** in production environments
+- ✅ **Rotate credentials regularly** for production systems
+- ✅ **Use different credentials** for development and production
+- ✅ **Limit access** to `.env` files (use file permissions: `chmod 600 .env`)
+- ✅ **Review `.env.example`** to ensure all required variables are documented
+
+#### Production Deployment
+
+For production deployments, consider these approaches:
+
+**Option 1: Environment-Specific `.env` Files**
+```bash
+# Use different .env files for different environments
+docker-compose --env-file .env.production up
+```
+
+**Option 2: CI/CD Secret Injection**
+Most CI/CD platforms (GitHub Actions, GitLab CI, Jenkins) support secure secret injection:
+```yaml
+# Example: GitHub Actions
+env:
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+```
+
+**Option 3: Docker Secrets (Docker Swarm)**
+For Docker Swarm deployments, use Docker Secrets:
+```yaml
+services:
+  database:
+    secrets:
+      - db_password
+secrets:
+  db_password:
+    external: true
+```
+
+**Option 4: HashiCorp Vault**
+For enterprise environments, integrate with HashiCorp Vault:
+- Store secrets in Vault
+- Use Vault Agent or API to inject secrets at runtime
+- Supports dynamic secret rotation
+
+**Option 5: Cloud Provider Secret Managers**
+- **AWS**: AWS Secrets Manager or AWS Systems Manager Parameter Store
+- **Azure**: Azure Key Vault
+- **GCP**: Google Secret Manager
+- **Kubernetes**: Kubernetes Secrets (if migrating to K8s)
+
+These cloud services provide:
+- Automatic secret rotation
+- Audit logging
+- Fine-grained access control
+- Integration with IAM/RBAC
+
 ### Database Connection
 
-The backend automatically connects to the PostgreSQL database using these environment variables:
-
-- `DB_HOST`: database
-- `DB_PORT`: 5432
-- `DB_NAME`: stayonDB
-- `DB_USER`: stayon
-- `DB_PASSWORD`: 1234
+The backend automatically connects to the PostgreSQL database using environment variables loaded from the `.env` file. The connection is configured in `stayOn_Backend/src/database/connection.js`.
 
 ### Database Initialization
 
@@ -176,11 +269,14 @@ volumes:
 
 For production deployment, consider:
 - Using environment-specific `docker-compose.prod.yml`
-- Securing database credentials with Docker secrets
+- Securing database credentials (see Secret Management section above)
 - Using multi-stage builds to reduce image size
 - Implementing proper logging and monitoring
 - Setting up reverse proxy (nginx) for frontend and backend
 - Using production builds for Angular (`ng build --configuration production`)
+- Implementing health checks and graceful shutdowns
+- Setting up automated backups for the database
+- Using managed database services (AWS RDS, Azure Database, etc.)
 
 ## 📄 License
 
