@@ -31,6 +31,18 @@ StayOn/
 
 - Docker Engine 20.10+
 - Docker Compose V2
+- Docker Hub account (for `dhi.io` login and image publishing)
+
+### Login to `dhi.io` (Hardened Images)
+
+This project uses pre-hardened base images from Docker Hub's official Hardened Images registry (`dhi.io`), specifically Node.js and PostgreSQL.
+
+1. **Generate a Personal Access Token in Docker Hub**
+2. **Login to `dhi.io` using your Docker Hub username and token:**
+   ```bash
+   docker login dhi.io
+   ```
+   When prompted, enter your Docker Hub username and the Personal Access Token as the password.
 
 ### Running the Application
 
@@ -277,6 +289,35 @@ For production deployment, consider:
 - Implementing health checks and graceful shutdowns
 - Setting up automated backups for the database
 - Using managed database services (AWS RDS, Azure Database, etc.)
+
+## 📤 Tagging and Pushing Images (Docker Hub)
+
+Use these steps to publish the backend, frontend, and database images to Docker Hub.
+
+### 1) Build the images locally
+```bash
+docker build -t stayon-backend:latest ./stayOn_Backend
+docker build -t stayon-frontend:latest ./stayOn_Frontend
+```
+
+The database uses the hardened image directly, so there is nothing to build unless you create a custom database image.
+
+### 2) Tag the images with your Docker Hub namespace
+Replace `<DOCKERHUB_USER>` with your Docker Hub username:
+```bash
+docker tag stayon-backend:latest <DOCKERHUB_USER>/stayon-backend:latest
+docker tag stayon-frontend:latest <DOCKERHUB_USER>/stayon-frontend:latest
+docker tag dhi.io/postgres:17-alpine3.22-dev <DOCKERHUB_USER>/stayon-database:latest
+```
+
+### 3) Push to Docker Hub
+```bash
+docker push <DOCKERHUB_USER>/stayon-backend:latest
+docker push <DOCKERHUB_USER>/stayon-frontend:latest
+docker push <DOCKERHUB_USER>/stayon-database:latest
+```
+
+If you create a custom database image, replace the database tag line above with your built image name.
 
 ## 📄 License
 

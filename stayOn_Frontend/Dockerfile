@@ -1,4 +1,4 @@
-FROM node:22.21.0-alpine3.22
+FROM dhi.io/node:22-alpine3.23-dev
 
 RUN addgroup stayon && adduser -S -G stayon stayon
 

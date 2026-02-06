@@ -1,7 +1,7 @@
 services:
   # PostgreSQL Database Service
   database:
-    image: postgres:17.6-alpine3.22
+    image: dhi.io/postgres:17-alpine3.22-dev
     container_name: stayon-database
     env_file:
       - .env
