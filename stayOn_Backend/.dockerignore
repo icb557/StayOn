@@ -1,3 +1,7 @@
-/node_modules
-/package-lock.json
-/uploads
+node_modules
+uploads
+Dockerfile
+.git
+.gitignore
+*.md
+.env

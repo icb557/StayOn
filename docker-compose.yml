@@ -2,7 +2,7 @@ services:
   # PostgreSQL Database Service
   database:
     image: dhi.io/postgres:17-alpine3.22-dev
-    container_name: stayon-database
+    container_name: stayon-database-dev
     env_file:
       - .env
     environment:
@@ -26,7 +26,9 @@ services:
     build:
       context: ./stayOn_Backend
       dockerfile: Dockerfile
-    container_name: stayon-backend
+      target: dev
+    image: stayon-backend:dev
+    container_name: stayon-backend-dev
     env_file:
       - .env
     environment:
@@ -53,7 +55,9 @@ services:
     build:
       context: ./stayOn_Frontend
       dockerfile: Dockerfile
-    container_name: stayon-frontend
+      target: dev
+    image: stayon-frontend:dev
+    container_name: stayon-frontend-dev
     environment:
       NODE_ENV: development
     ports:

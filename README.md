@@ -279,16 +279,36 @@ volumes:
 
 ## 📦 Production Considerations
 
-For production deployment, consider:
-- Using environment-specific `docker-compose.prod.yml`
-- Securing database credentials (see Secret Management section above)
-- Using multi-stage builds to reduce image size
-- Implementing proper logging and monitoring
-- Setting up reverse proxy (nginx) for frontend and backend
-- Using production builds for Angular (`ng build --configuration production`)
-- Implementing health checks and graceful shutdowns
-- Setting up automated backups for the database
-- Using managed database services (AWS RDS, Azure Database, etc.)
+### Multi-Stage Docker Builds
+
+This project uses **multi-stage Dockerfiles** to optimize production images while maintaining full-featured development environments.
+
+**Architecture:**
+- **Dev stage**: Full development tools (nodemon, Angular CLI, build tools) with volume mounts for hot reload
+- **Build/Deps stage**: Installs dependencies and compiles production assets
+- **Prod stage**: Minimal runtime-only image (no dev dependencies, build tools, or shell)
+
+### Running Development vs Production
+
+**Development (default):**
+```bash
+docker compose up --build
+```
+- Targets: `dev` stage in Dockerfiles
+- Images: `stayon-backend:dev`, `stayon-frontend:dev`
+- Features: Hot reload, volume mounts, dev dependencies
+- Containers: `stayon-backend-dev`, `stayon-frontend-dev`
+
+**Production:**
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build
+```
+- Targets: `prod` stage in Dockerfiles
+- Images: `stayon-backend:prod`, `stayon-frontend:prod`
+- Features: Minimal images, no shell, no source mounts, optimized builds
+- Containers: `stayon-backend-prod`, `stayon-frontend-prod`
+- Frontend: Served by nginx (port 80) with static Angular production build
+- Backend: Runs directly with `node` (no nodemon)
 
 ## 📤 Tagging and Pushing Images (Docker Hub)
 

@@ -1,0 +1,31 @@
+services:
+  # Production database with hardened image
+  database:
+    image: dhi.io/postgres:17-alpine3.22
+    container_name: stayon-database
+
+  # Production backend
+  backend:
+    build:
+      context: ./stayOn_Backend
+      dockerfile: Dockerfile
+      target: prod
+    image: stayon-backend:prod
+    container_name: stayon-backend
+    environment:
+      NODE_ENV: production
+    volumes: []
+    command: []  # Clear base command, use Dockerfile CMD
+
+  # Production frontend (nginx)
+  frontend:
+    build:
+      context: ./stayOn_Frontend
+      dockerfile: Dockerfile
+      target: prod
+    image: stayon-frontend:prod
+    container_name: stayon-frontend
+    ports:
+      - "80:80"
+    volumes: []
+    command: []  # Clear base command, use Dockerfile CMD
